@@ -7,13 +7,23 @@ import org.testng.annotations.*;
 public class TestTestNG {
 
     WebDriver driver;
+    
+@BeforeMethod
+public void setup() {
 
-    @BeforeMethod
-    public void setup() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
+    String headless = System.getProperty("headless");
+
+    ChromeOptions options = new ChromeOptions();
+
+    if ("true".equals(headless)) {
+        options.addArguments("--headless=new");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
     }
 
+    driver = new ChromeDriver(options);
+    driver.manage().window().maximize();
+}
     @Test
     public void openGoogle() {
         driver.get("https://www.google.com");
